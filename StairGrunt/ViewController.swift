@@ -16,11 +16,13 @@ let url = URL(fileURLWithPath: path)
 
 class ViewController: UIViewController {
     
-    
+    var date1 : Date! = Date()
     var AltitudeArray : [Float] = [0.0]
     var pedometer = CMPedometer()
     var altitude = CMAltimeter()
     var previous : CGFloat = 0.0
+    var previousGrunt : Date = Date()
+
     @IBOutlet weak var Update: UILabel!
     
     @IBOutlet weak var Steps: UILabel!
@@ -72,7 +74,6 @@ class ViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
-
         if CMPedometer.isFloorCountingAvailable() {
             pedometer.startUpdates(from: Date()) { (data, error) in
                  self.Update.text = "floors ascended: \(data?.floorsAscended?.description ?? 0.description)"
@@ -86,19 +87,24 @@ class ViewController: UIViewController {
                 self.Pressure.text = "Pressure: \(data?.pressure.description ?? 0.description)"
                 // find difference between last element and current altitude
                 let current = data?.relativeAltitude.floatValue
-                let difference = self.previous + CGFloat(current!)
+                let difference = self.previous - CGFloat(current!)
 
                 self.AltitudeArray.append(Float(difference))
                 if self.AltitudeArray.count > 10{
                     self.AltitudeArray.remove(at: 0)
                 }
                 let numberSum = self.AltitudeArray.reduce(0, { x, y in
-                    x + y
+                    x - y
                 })
-                if (numberSum > 2.0){
+                let elapsed = self.date1.timeIntervalSince(Date())
+                if (numberSum > 2.0 && elapsed < -30.0){
                     playSound()
                     //do timestamp so it doesnt go nuts
+                    self.date1 = Date()
+                    
                 }
+    
+                print(elapsed, "elapsed time")
                 self.previous = CGFloat(current!)
                 print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
                 self.TenSecondChange.text = "10 seconds : \(numberSum.description)"
