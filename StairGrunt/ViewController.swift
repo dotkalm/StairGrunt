@@ -9,6 +9,7 @@
 import UIKit
 import CoreMotion
 import AVFoundation
+import CoreLocation
 
 var Grunt: AVAudioPlayer?
 let path = Bundle.main.path(forResource: "StairGrunt.wav", ofType:nil)!
@@ -39,7 +40,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         func playSound() {
             guard let url = Bundle.main.url(forResource: "StairGrunt", withExtension: "wav") else { return }
 
@@ -94,9 +95,11 @@ class ViewController: UIViewController {
                 
                }
         }
+        print(CLLocation().altitude, "altitude")
  
         // Do any additional setup after loading the view.
     }
+    
 
 
 }
