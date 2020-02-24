@@ -35,20 +35,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var TenSecondChange: UILabel!
     
-    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-
-    func registerBackgroundTask() {
-       backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-         self?.endBackgroundTask()
-       }
-       assert(backgroundTask != .invalid)
-     }
-       
-     func endBackgroundTask() {
-       print("Background task ended.")
-       UIApplication.shared.endBackgroundTask(backgroundTask)
-       backgroundTask = .invalid
-     }
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +70,6 @@ class ViewController: UIViewController {
         }
         if CMAltimeter.isRelativeAltitudeAvailable(){
             altitude.startRelativeAltitudeUpdates(to: OperationQueue.main) { (data, error) in
-                self.Altitude.text = "Altitude: \(String.init(format: "%.1fM", (data?.relativeAltitude.floatValue)!))"
-                self.Pressure.text = "Pressure: \(data?.pressure.description ?? 0.description)"
-                // find difference between last element and current altitude
                 let current = data?.relativeAltitude.floatValue
                 let difference = self.previous - CGFloat(current!)
 
@@ -99,7 +83,7 @@ class ViewController: UIViewController {
                 let elapsed = self.date1.timeIntervalSince(Date())
                 if (numberSum > 2.0 && elapsed < -30.0){
                     playSound()
-                    //do timestamp so it doesnt go nuts
+                    print("GRUNNNNTTT")
                     self.date1 = Date()
                     
                 }
@@ -107,7 +91,6 @@ class ViewController: UIViewController {
                 print(elapsed, "elapsed time")
                 self.previous = CGFloat(current!)
                 print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
-                self.TenSecondChange.text = "10 seconds : \(numberSum.description)"
                 
                }
         }
