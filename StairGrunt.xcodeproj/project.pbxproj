@@ -14,6 +14,7 @@
 		5D236DFA240453720000E592 /* StairGrunt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D236DF8240453720000E592 /* StairGrunt.xcdatamodeld */; };
 		5D236DFC240453780000E592 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D236DFB240453780000E592 /* Assets.xcassets */; };
 		5D236DFF240453780000E592 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D236DFD240453780000E592 /* LaunchScreen.storyboard */; };
+		5D94C835240473DF005E4C93 /* StairGrunt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5D94C834240473DF005E4C93 /* StairGrunt.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		5D236DFB240453780000E592 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D236DFE240453780000E592 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D236E00240453780000E592 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D94C834240473DF005E4C93 /* StairGrunt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = StairGrunt.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		5D236DEE240453720000E592 /* StairGrunt */ = {
 			isa = PBXGroup;
 			children = (
+				5D94C834240473DF005E4C93 /* StairGrunt.wav */,
 				5D236DEF240453720000E592 /* AppDelegate.swift */,
 				5D236DF1240453720000E592 /* SceneDelegate.swift */,
 				5D236DF3240453720000E592 /* ViewController.swift */,
@@ -129,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D236DFF240453780000E592 /* LaunchScreen.storyboard in Resources */,
+				5D94C835240473DF005E4C93 /* StairGrunt.wav in Resources */,
 				5D236DFC240453780000E592 /* Assets.xcassets in Resources */,
 				5D236DF7240453720000E592 /* Main.storyboard in Resources */,
 			);
