@@ -14,9 +14,10 @@ import CoreLocation
 var Grunt: AVAudioPlayer?
 let path = Bundle.main.path(forResource: "StairGrunt.wav", ofType:nil)!
 let url = URL(fileURLWithPath: path)
+var locationManager: CLLocationManager!
 
-class ViewController: UIViewController {
-    
+class ViewController: UIViewController{
+
     var date1 : Date! = Date()
     var AltitudeArray : [Float] = [0.0]
     var pedometer = CMPedometer()
@@ -40,6 +41,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager?.allowsBackgroundLocationUpdates = true
+        locationManager?.pausesLocationUpdatesAutomatically = false
 
         func playSound() {
             guard let url = Bundle.main.url(forResource: "StairGrunt", withExtension: "wav") else { return }
@@ -73,7 +76,8 @@ class ViewController: UIViewController {
             altitude.startRelativeAltitudeUpdates(to: OperationQueue.main) { (data, error) in
                 let current = data?.relativeAltitude.floatValue
                 let difference = self.previous - CGFloat(current!)
-
+                self.Altitude.text = "Altitude: \(String.init(format: "%.1fM", (data?.relativeAltitude.floatValue)!))"
+                self.Pressure.text = "Pressure: \(data?.pressure.description ?? 0.description)"
                 self.AltitudeArray.append(Float(difference))
                 if self.AltitudeArray.count > 10{
                     self.AltitudeArray.remove(at: 0)
@@ -81,21 +85,27 @@ class ViewController: UIViewController {
                 let numberSum = self.AltitudeArray.reduce(0, { x, y in
                     x - y
                 })
+                self.TenSecondChange.text = numberSum.description
+
                 let elapsed = self.date1.timeIntervalSince(Date())
                 if (numberSum > 2.0 && elapsed < -30.0){
                     playSound()
                     print("GRUNNNNTTT")
                     self.date1 = Date()
                     
+                    
                 }
-    
+
+
+
                 print(elapsed, "elapsed time")
                 self.previous = CGFloat(current!)
                 print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
-                
+                print(CLLocation().altitude, "altitude")
+                self.Cadence.text = CLLocation().altitude.description
                }
+
         }
-        print(CLLocation().altitude, "altitude")
  
         // Do any additional setup after loading the view.
     }
