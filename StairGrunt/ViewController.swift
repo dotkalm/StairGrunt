@@ -52,7 +52,7 @@ class ViewController: UIViewController{
                 try AVAudioSession.sharedInstance().setActive(true)
 
                 /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-                Grunt = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+                Grunt = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
 
                 /* iOS 10 and earlier require the following line:
                 player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
@@ -88,9 +88,8 @@ class ViewController: UIViewController{
                 self.TenSecondChange.text = numberSum.description
 
                 let elapsed = self.date1.timeIntervalSince(Date())
-                if (numberSum > 2.0 && elapsed < -30.0){
+                if (numberSum > 1.6 && elapsed < -30.0){
                     playSound()
-                    print("GRUNNNNTTT")
                     self.date1 = Date()
                     
                     
