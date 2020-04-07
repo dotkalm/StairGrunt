@@ -14,7 +14,7 @@ import CoreLocation
 var Grunt: AVAudioPlayer?
 let path = Bundle.main.path(forResource: "StairGrunt.wav", ofType:nil)!
 let url = URL(fileURLWithPath: path)
-var locationManager: CLLocationManager!
+var locationManager = CLLocationManager()
 
 class ViewController: UIViewController{
 
@@ -37,13 +37,33 @@ class ViewController: UIViewController{
     
     @IBOutlet weak var TenSecondChange: UILabel!
     
-   
+    @IBOutlet weak var lat: UILabel!
     
+    @IBOutlet weak var long: UILabel!
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager?.allowsBackgroundLocationUpdates = true
-        locationManager?.pausesLocationUpdatesAutomatically = false
-
+//        locationManager.allowsBackgroundLocationUpdates = true
+//        locationManager.pausesLocationUpdatesAutomatically = false
+//        CLLocationManager().requestLocation()
+        locationManager.requestAlwaysAuthorization()
+//        if CLLocationManager.locationServicesEnabled(){
+//
+//            CLLocationManager().desiredAccuracy = kCLLocationAccuracyBest
+//            print(CLLocationManager.locationServicesEnabled(), "location services enabled")
+//            print(CLLocation().description, "location")
+//            print(CLLocationCoordinate2D())
+//            print(CLLocation().altitude, "altitude")
+//            print(CLAuthorizationStatus.authorizedAlways, "authorized always")
+//            self.lat.text = CLLocation().coordinate.latitude.description
+//            self.long.text = CLLocation().coordinate.latitude.description
+//            self.Cadence.text = CLLocation().altitude.description
+//
+//           }else{
+//                print ("Err GPS")
+//        }
+        
         func playSound() {
             guard let url = Bundle.main.url(forResource: "StairGrunt", withExtension: "wav") else { return }
 
@@ -65,6 +85,7 @@ class ViewController: UIViewController{
                 print(error.localizedDescription)
             }
         }
+        
         if CMPedometer.isFloorCountingAvailable() {
             pedometer.startUpdates(from: Date()) { (data, error) in
                  self.Update.text = "floors ascended: \(data?.floorsAscended?.description ?? 0.description)"
@@ -72,6 +93,7 @@ class ViewController: UIViewController{
                  self.Cadence.text = "cadence: \(data?.currentCadence?.description ?? 0.description)"
             }
         }
+        
         if CMAltimeter.isRelativeAltitudeAvailable(){
             altitude.startRelativeAltitudeUpdates(to: OperationQueue.main) { (data, error) in
                 let current = data?.relativeAltitude.floatValue
@@ -94,19 +116,30 @@ class ViewController: UIViewController{
                     
                     
                 }
-
-
-
                 print(elapsed, "elapsed time")
                 self.previous = CGFloat(current!)
                 print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
-                print(CLLocation().altitude, "altitude")
-                self.Cadence.text = CLLocation().altitude.description
+  
                }
 
         }
- 
+
         // Do any additional setup after loading the view.
+        if CLLocationManager.locationServicesEnabled(){
+            
+            CLLocationManager().desiredAccuracy = kCLLocationAccuracyBest
+            print(CLLocationManager.locationServicesEnabled(), "location services enabled")
+            print(CLLocation().description, "location")
+            print(CLLocationCoordinate2D())
+            print(CLLocation().altitude, "altitude")
+            print(CLAuthorizationStatus.authorizedAlways, "authorized always")
+            self.lat.text = CLLocation().coordinate.latitude.description
+            self.long.text = CLLocation().coordinate.latitude.description
+            self.Cadence.text = CLLocation().altitude.description
+            
+            }else{
+              print ("Err GPS")
+        }
     }
     
 

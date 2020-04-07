@@ -69,8 +69,12 @@
 	<key>NSMotionUsageDescription</key>
 	<string>make grunting sound when walking up stairs</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>make grunting sound</string>
+	<string>find location make grunting sound</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>make grunting</string>
+	<string>find location and make grunting</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>find location</string>
+	<key>NSLocationUsageDescription</key>
+	<string>find Location</string>
 </dict>
 </plist>
