@@ -49,14 +49,16 @@ class ViewController: UIViewController{
     func updateCoordinates(){
         print("button clicked")
         locationManager.startUpdatingLocation()
-        let parameters = ["query": "{ locations { id name day time lat long geohash }}"] as [String : Any]
+        let parameters = ["query": "query{ locations { id name day time lat long geohash }}"] as [String : Any]
         do{
-            let data = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            let headers = ["content-type": "application/json"]
+            let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
             
-            let url = URL(string: "https://graphql-express-location.herokuapp.com/graphq")!
+            let url = URL(string: "https://graphql-express-location.herokuapp.com/graphql")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-            request.httpBody = data
+            request.allHTTPHeaderFields = headers
+            request.httpBody = postData as Data
             let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let error = error {
                     print("error: \(error)")
