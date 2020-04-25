@@ -10,14 +10,14 @@ import UIKit
 import CoreMotion
 import AVFoundation
 import CoreLocation
+import MapKit
 
 var Grunt: AVAudioPlayer?
 let path = Bundle.main.path(forResource: "StairGrunt.wav", ofType:nil)!
 let url = URL(fileURLWithPath: path)
-var locationManager = CLLocationManager()
 
 class ViewController: UIViewController{
-
+    var locationManager: CLLocationManager = CLLocationManager()
     var date1 : Date! = Date()
     var AltitudeArray : [Float] = [0.0]
     var pedometer = CMPedometer()
@@ -41,28 +41,23 @@ class ViewController: UIViewController{
     
     @IBOutlet weak var long: UILabel!
     
-
+    @IBOutlet weak var corelocationAltitude: UILabel!
+    @IBAction func getLocation(_ sender: Any) {
+        updateCoordinates()
+    }
+    
+    
+    func updateCoordinates(){
+        print("button clicked")
+        locationManager.startUpdatingLocation()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        locationManager.allowsBackgroundLocationUpdates = true
-//        locationManager.pausesLocationUpdatesAutomatically = false
-//        CLLocationManager().requestLocation()
-        locationManager.requestAlwaysAuthorization()
-//        if CLLocationManager.locationServicesEnabled(){
-//
-//            CLLocationManager().desiredAccuracy = kCLLocationAccuracyBest
-//            print(CLLocationManager.locationServicesEnabled(), "location services enabled")
-//            print(CLLocation().description, "location")
-//            print(CLLocationCoordinate2D())
-//            print(CLLocation().altitude, "altitude")
-//            print(CLAuthorizationStatus.authorizedAlways, "authorized always")
-//            self.lat.text = CLLocation().coordinate.latitude.description
-//            self.long.text = CLLocation().coordinate.latitude.description
-//            self.Cadence.text = CLLocation().altitude.description
-//
-//           }else{
-//                print ("Err GPS")
-//        }
+
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
         func playSound() {
             guard let url = Bundle.main.url(forResource: "StairGrunt", withExtension: "wav") else { return }
@@ -116,33 +111,55 @@ class ViewController: UIViewController{
                     
                     
                 }
-                print(elapsed, "elapsed time")
+//                print(elapsed, "elapsed time")
                 self.previous = CGFloat(current!)
-                print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
+//                print(self.AltitudeArray, self.AltitudeArray.count, numberSum)
   
                }
 
         }
 
-        // Do any additional setup after loading the view.
-        if CLLocationManager.locationServicesEnabled(){
-            
-            CLLocationManager().desiredAccuracy = kCLLocationAccuracyBest
-            print(CLLocationManager.locationServicesEnabled(), "location services enabled")
-            print(CLLocation().description, "location")
-            print(CLLocationCoordinate2D())
-            print(CLLocation().altitude, "altitude")
-            print(CLAuthorizationStatus.authorizedAlways, "authorized always")
-            self.lat.text = CLLocation().coordinate.latitude.description
-            self.long.text = CLLocation().coordinate.latitude.description
-            self.Cadence.text = CLLocation().altitude.description
-            
-            }else{
-              print ("Err GPS")
-        }
+        // Do any additional setup after loading the view
+        
+
     }
     
-
-
+    
+   
+    
+    
+    
+    
 }
+
+extension ViewController: CLLocationManagerDelegate{
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       if let location = locations.first {
+            print("Found user's location: \(location)", "lat =", location.coordinate.latitude," long = ",location.coordinate.longitude)
+            self.lat.text = "My Lat:" + String(location.coordinate.latitude)
+            self.long.text = "My Long:" + String(location.coordinate.longitude)
+    
+    
+//            let span = MKCoordinateSpanMake(0.0005, 0.0005)
+            let mylocation = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+            print(mylocation)
+            print("\n", location.altitude, "altitude")
+            self.corelocationAltitude.text = "altitude: " + String(location.altitude)
+//            let region = MKCoordinateRegionMake(mylocation, span)
+//            Map.setRegion(region, animated: true)
+    
+            //marker
+            let marker1 = MKPointAnnotation()
+            marker1.coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+            marker1.title = "My Position"
+//            Map.addAnnotation(marker1)
+    
+       }
+  }
+    
+  func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+       print("Failed to find user's location: \(error.localizedDescription)")
+  }
+}
+
 
