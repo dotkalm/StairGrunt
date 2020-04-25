@@ -46,10 +46,34 @@ class ViewController: UIViewController{
         updateCoordinates()
     }
     
-    
     func updateCoordinates(){
         print("button clicked")
         locationManager.startUpdatingLocation()
+        let parameters = ["query": "{ locations { id name day time lat long geohash }}"] as [String : Any]
+        do{
+            let data = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            
+            let url = URL(string: "https://graphql-express-location.herokuapp.com/graphq")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.httpBody = data
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print("error: \(error)")
+                } else {
+                    if let response = response as? HTTPURLResponse {
+                        print("statusCode: \(response.statusCode)")
+                    }
+                    if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                        print("data: \(dataString)")
+                    }
+                }
+            }
+            task.resume()
+        } catch{
+            
+        }
+
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,15 +159,15 @@ class ViewController: UIViewController{
 extension ViewController: CLLocationManagerDelegate{
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
        if let location = locations.first {
-            print("Found user's location: \(location)", "lat =", location.coordinate.latitude," long = ",location.coordinate.longitude)
+//            print("Found user's location: \(location)", "lat =", location.coordinate.latitude," long = ",location.coordinate.longitude)
             self.lat.text = "My Lat:" + String(location.coordinate.latitude)
             self.long.text = "My Long:" + String(location.coordinate.longitude)
     
     
 //            let span = MKCoordinateSpanMake(0.0005, 0.0005)
             let mylocation = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-            print(mylocation)
-            print("\n", location.altitude, "altitude")
+//            print(mylocation)
+//            print("\n", location.altitude, "altitude")
             self.corelocationAltitude.text = "altitude: " + String(location.altitude)
 //            let region = MKCoordinateRegionMake(mylocation, span)
 //            Map.setRegion(region, animated: true)
