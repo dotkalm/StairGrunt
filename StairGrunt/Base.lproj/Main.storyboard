@@ -74,7 +74,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoR-qc-Fhz">
                                 <rect key="frame" x="68" y="474" width="278" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="GET COORDINATES"/>
+                                <state key="normal" title="SEND COORDINATES"/>
                                 <connections>
                                     <action selector="getLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="P15-0y-ieP"/>
                                 </connections>
@@ -86,6 +86,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4KK-W9-tJU">
+                                <rect key="frame" x="68" y="433" width="278" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -99,6 +105,7 @@
                         <outlet property="Update" destination="W8R-8d-SDn" id="izP-Fl-MA0"/>
                         <outlet property="corelocationAltitude" destination="Lgc-M1-8SI" id="K4a-if-cbU"/>
                         <outlet property="lat" destination="ZId-GI-Fro" id="ZEg-Nt-2iZ"/>
+                        <outlet property="locationName" destination="4KK-W9-tJU" id="9u9-yY-1HY"/>
                         <outlet property="long" destination="92a-Wn-VFJ" id="Yml-oM-QKb"/>
                     </connections>
                 </viewController>

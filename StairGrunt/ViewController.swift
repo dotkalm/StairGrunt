@@ -39,21 +39,28 @@ class ViewController: UIViewController{
     
     @IBOutlet weak var lat: UILabel!
     
+    @IBOutlet weak var locationName: UITextField!
     @IBOutlet weak var long: UILabel!
     
     @IBOutlet weak var corelocationAltitude: UILabel!
     @IBAction func getLocation(_ sender: Any) {
         updateCoordinates()
     }
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
+    var myAltitude: Double = 0.0
     
     func updateCoordinates(){
         print("button clicked")
+        print(self.locationName.text ?? "somewhere")
         locationManager.startUpdatingLocation()
-        let parameters = ["query": "query{ locations { id name day time lat long geohash }}"] as [String : Any]
+        let name = " \"\(self.locationName.text ?? "none")\" "
+
+        let parameters = ["query": "mutation{ addLocation(name:\(name) lat:\(latitude) long:\(longitude) id:1){ name lat long id }}"] as [String : Any]
         do{
+            print(parameters)
             let headers = ["content-type": "application/json"]
             let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
-            
             let url = URL(string: "https://graphql-express-location.herokuapp.com/graphql")!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -73,9 +80,7 @@ class ViewController: UIViewController{
             }
             task.resume()
         } catch{
-            
         }
-
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,7 +169,9 @@ extension ViewController: CLLocationManagerDelegate{
 //            print("Found user's location: \(location)", "lat =", location.coordinate.latitude," long = ",location.coordinate.longitude)
             self.lat.text = "My Lat:" + String(location.coordinate.latitude)
             self.long.text = "My Long:" + String(location.coordinate.longitude)
-    
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+            myAltitude = location.altitude
     
 //            let span = MKCoordinateSpanMake(0.0005, 0.0005)
             let mylocation = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
